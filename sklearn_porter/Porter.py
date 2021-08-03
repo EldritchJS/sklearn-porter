@@ -7,14 +7,14 @@ import types
 import numpy as np
 
 from sklearn.metrics import accuracy_score
-from sklearn.tree.tree import DecisionTreeClassifier
-from sklearn.ensemble.weight_boosting import AdaBoostClassifier
-from sklearn.ensemble.forest import RandomForestClassifier
-from sklearn.ensemble.forest import ExtraTreesClassifier
-from sklearn.svm.classes import LinearSVC
-from sklearn.svm.classes import SVC
-from sklearn.svm.classes import NuSVC
-from sklearn.neighbors.classification import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
+from sklearn.svm import NuSVC
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import BernoulliNB
 
@@ -262,8 +262,14 @@ class Porter(object):
             SVC,
         )
 
+        # sklearn version >= 0.20.0
+        if self.sklearn_ver[:2] >= (0, 20):
+            from sklearn.neural_network \
+                import MLPClassifier
+            classifiers += (MLPClassifier, )
+
         # sklearn version >= 0.18.0
-        if self.sklearn_ver[:2] >= (0, 18):
+        elif self.sklearn_ver[:2] >= (0, 18):
             from sklearn.neural_network.multilayer_perceptron \
                 import MLPClassifier
             classifiers += (MLPClassifier, )
@@ -284,8 +290,14 @@ class Porter(object):
         # sklearn version < 0.18.0
         regressors = ()
 
+        # sklearn version >= 0.20.0
+        if self.sklearn_ver[:2] >= (0, 20):
+            from sklearn.neural_network \
+                import MLPRegressor
+            regressors += (MLPRegressor, )
+        
         # sklearn version >= 0.18.0
-        if self.sklearn_ver[:2] >= (0, 18):
+        elif self.sklearn_ver[:2] >= (0, 18):
             from sklearn.neural_network.multilayer_perceptron \
                 import MLPRegressor
             regressors += (MLPRegressor, )
